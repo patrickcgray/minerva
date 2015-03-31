@@ -1,9 +1,23 @@
+#! /usr/bin/env python3
+
 import nltk
 from  urllib.request import urlopen
 from  urllib.request import URLError
 from bs4 import BeautifulSoup
 import re
 import random
+from wordnik import *
+
+### starting wordnik API ###
+
+apiUrl = 'http://api.wordnik.com/v4'
+apiKey = '0'
+client = swagger.ApiClient(apiKey, apiUrl)
+wordApi = WordApi.WordApi(client)
+
+###
+
+### main chatbot class ###
 
 class Minerva(object):
     def __init__(self):
@@ -29,6 +43,9 @@ class Minerva(object):
 
     #def add_to_user_memory(self, user_id, data_to_add)
 
+###
+
+### helping functions ###
 
 def soupify_url(url):
     try:
@@ -67,7 +84,11 @@ def stripAllTags( html ):
         return None
     return ''.join(BeautifulSoup(html).findAll(text = True))
 
-def mainMinerva():
+###
+
+### primary function to run the program ###
+
+def run_minerva():
     print ('Ask or tell me something por favor')
     print ('*** Just type "exit" in order to quit')
     while (1<2):
@@ -82,15 +103,27 @@ def mainMinerva():
             print ('')
             print ('you used ' + str(len(nouns)) + ' nouns')
             if len(nouns) > 0:
-                soup = soupify_url('http://dictionary.reference.com/browse/' + nouns[0]) 
-                dndata_tags = soup.findAll('div',{'class':'dndata'})
-                print(dndata_tags)
+                #soup = soupify_url('http://dictionary.reference.com/browse/' + nouns[0]) 
+                #dndata_tags = soup.findAll('div',{'class':'dndata'})
+                #print(dndata_tags)
+                definitions = wordApi.getDefinitions(nouns[0])
+                def1 = definitions[0].text
                 text = dndata_tags[0]
-                print ('I find ' + nouns[0] + ' most interesting. Did you know that they are ' + re.sub('<[^<]+?>', '', str(text)))
+                print ('I find ' + nouns[0] + ' most interesting. Did you know that they are ' + re.sub('<[^<]+?>', '', str(def1)))
                 
             if 'who' or 'what' or 'when' or 'where' or 'why' or 'how' in user_input:
                 print ('you asked a question')
             
             print ('you said: ' + user_input)
 
-mainMinerva()
+###
+
+### calling the program ###
+
+def main(argv=None):
+    run_minerva()
+
+if __name__ == "__main__":
+    main()
+
+###
