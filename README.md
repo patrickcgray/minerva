@@ -7,8 +7,10 @@
 
 ###Running Minerva:
 `./chatboy.py`
-
 Then follow the instructions in the terminal.
+
+###Current functionality:
+Minerva currently accepts text input and analyzes the sentence for nouns and then spits back the definition as well as a random example of the first noun that is used in the string... a long way to go to sentience...
 
 ###Dependencies (you can install all these wit pip:
 - python3
@@ -18,7 +20,6 @@ Then follow the instructions in the terminal.
 - numpy
 
 ###To Do List:
-- get wordnik API key and get it to work correctly
 - build scraper to search wikipedia for interesting facts
 - decide on intro, how should it start? the same every time or slightly random
 - look into chat history in NLTK book
